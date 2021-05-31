@@ -14,6 +14,7 @@ export class ClientesService {
   constructor( private http: HttpClient ) { }
 
   createClient(heroe: HeroeModel){
+
     return this.http.post (`${this.url}/heroes.json`, heroe)
                           .pipe(
                             map((resp:any)=>{
@@ -30,8 +31,41 @@ export class ClientesService {
     };
 
     delete heroeTemp['id'];
-
     return this.http.put ( `${this.url}/heroes/${heroe.id}.json`, heroeTemp);
+  }
+
+  getClients() {
+
+    return this.http.get (`${this.url}/heroes.json`)
+                      .pipe(
+                        map(resp=>this.crearArray(resp)) 
+                      );
+  }
+
+  private crearArray(heroesObj:any){
+
+    const heroes: HeroeModel[] = [] ;
+
+    if ( heroesObj === null ) { return []; }
+
+    Object.keys(heroesObj).forEach (key=>{
+
+      const heroe: HeroeModel = heroesObj[key] ;
+      heroe.id = key ;
+
+      heroes.push (heroe) ;
+
+    });
+
+    return heroes;
+  }
+
+  getClient (id: string){
+    return this.http.get (`${this.url}/heroes/${id}.json`);
+  }
+
+  deleteClient (id: string){
+    return this.http.delete (`${this.url}/heroes/${id}.json`)
   }
 
   }

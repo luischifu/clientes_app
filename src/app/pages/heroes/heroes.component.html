@@ -10,16 +10,31 @@
           <th scope="col">Price</th>
           <th scope="col">Paid</th>
           <th scope="col">Status</th>
+          <th scope="col">Toll</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-          <td>tumama</td>
-          <td>No sended</td>
+        <tr *ngFor="let heroe of heroes ; let i = index">
+          <th scope="row">{{ i+1 }}</th>
+          <td>{{heroe.name}}</td>
+          <td>{{heroe.product}}</td>
+          <td>{{heroe.price}}</td>
+          <td>{{heroe.paid}}</td>
+
+          <td>
+              <label *ngIf="heroe.status" class="badge bg-success">Paid</label>
+              <label *ngIf="!heroe.status" class="badge bg-danger">No Paid</label>
+          </td>
+
+          <td>
+              <button class="btn btn-info m-1" [routerLink]="['/heroe', heroe.id]" >
+                  <i class="fa fa-pen"></i>
+              </button>
+              <button class="btn btn-danger m-1" (click)="deleteClient(heroe, i)">
+                <i class="fa fa-trash"></i>
+            </button>
+
+          </td>
         </tr>
     </tbody>
 </table>
